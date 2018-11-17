@@ -1,0 +1,1139 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Lely Türkiye</title>
+    <style>
+        #divNewsCont {
+            left: 100px;
+            top: 200px;
+            width: 300px;
+            height: 80px;
+            clip: rect(0px 300px 80px 0px);
+            visibility: hidden;
+            overflow: hidden;
+        }
+
+        p,
+        h1,
+        h2 {
+            color: white;
+        }
+    </style>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+        var map, map2;
+        var markers = [];
+
+        var coordsurl = "https://gist.githubusercontent.com/anonymous/b9fb2df41f53e00d5828/raw/e728b7bea4a94fb31f049fef5f48147e41b018ad/trakya.json";
+        var coordsur2 =
+            "https://gist.githubusercontent.com/anonymous/54e04996c5d29bae38ff/raw/9015ae179e5f201a6a600f85a5b1ad6c994490cf/balikesir.json";
+        var coordsur3 =
+            "https://gist.githubusercontent.com/anonymous/671200c46f4fda8f419b/raw/81f229f505ebf17dbbab522a38134ee9731309d7/bursa.json";
+        var coordsur4 = "https://gist.githubusercontent.com/anonymous/3c6d2e1c43e0a9e10850/raw/355f4ce66f645f8a97f0b6ce3c471472aeb0aebd/izmir.json";
+        var coordsur5 = "https://gist.githubusercontent.com/anonymous/2e66918b1982c247854f/raw/cf81d598c5703b4f196fc7060909ff532f467501/denizli.json";
+        var coordsur6 = "https://gist.githubusercontent.com/anonymous/5f54b610a3ce8ec97b96/raw/59d63aed887fa1f54f2e929f38fd83bb030c02d1/konya.json";
+        var coordsur7 = "https://gist.githubusercontent.com/anonymous/ee1a2eea4acfb2c5ed4c/raw/ff9b01f163016cfbc6ded55f9cb8170c183471dc/kayseri.json";
+
+
+        function initialize(condition) {
+            var myOptions = {
+                zoom: 6,
+                center: new google.maps.LatLng(38.963745, 35.243322),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+
+            map = new google.maps.Map(document.getElementById("map_canvas"),
+                myOptions);
+
+            map2 = new google.maps.Map(document.getElementById("map_canvas2"),
+                myOptions);
+            var icon = "";
+
+
+
+            var locations = [
+                //Birinci Harita Verileri
+
+                //LC MAP1
+
+                {
+                    map_of: 1,
+                    lat: 39.636233,
+                    lng: 27.876177,
+                    icon: 'http://i.hizliresim.com/lyWzjE.png',
+                    content: "<h3>LC Balıkesir</h3><hr>Milkturk Gıda Hayvancılık ve Yem San.Ürünleri A.Ş.<br>Niyazi Şimşek<br>O.S.B. 8.Cad. No:6 Balıkesir<br>P.K. 10100<br>Kurtdereli V.D. 6200528437"
+                }, {
+                    map_of: 1,
+                    lat: 38.395505,
+                    lng: 27.095087,
+                    icon: 'http://i.hizliresim.com/lyWzjE.png',
+                    content: "<h3>LC İzmir</h3><hr>Usda Danışmanlık Proje Tarım San. ve Tic. Ltd. Şti.<br>Onur Bekler - Özgür Topuzoğlu<br>Esenyalı Mah. 108/2 Sok. No:2 D:17 Karabağlar / İzmir<br>P.K. 35140<br>Kadifekale V.D. 8940379486"
+                }, {
+                    map_of: 1,
+                    lat: 38.733698,
+                    lng: 35.54184,
+                    icon: 'http://i.hizliresim.com/lyWzjE.png',
+                    content: "<h3>LC Kayseri</h3><hr>AND Makina<br>Fırat Tuncay<br>O.S.B. 11. CAD. NO:24 Melikgazi / Kayseri<br>P.K. 38030<br>M. Sinan V.D. 8630051737"
+                }, {
+                    map_of: 1,
+                    lat: 41.403217,
+                    lng: 27.347344,
+                    icon: 'http://i.hizliresim.com/lyWzjE.png',
+                    content: "<h3>LOLC Trakya</h3><hr>Lely Trakya Çiftlik Ekipmanları San. İç ve Dış Tic. LTD. ŞTİ.<br>Hakan Copur<br>Hürriyet Mah. Eski İstasyon Cad. No: 31 Z.01 Lüleburgaz / Kırklareli<br>P.K. 39760<br>Lüleburgaz V.D. 6080597189"
+                },
+
+
+                //İkinci Harita Verileri
+
+                //IPARD
+                {
+                    map_of: 2,
+                    lat: 39.792895,
+                    lng: 43.179576,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>AĞRI</h3>- Existing Farms: 12<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 40.569145,
+                    lng: 35.920845,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>AMASYA</h3>- Existing Farms: 15<br>- IPARD Subsidies: 2"
+                }, {
+                    map_of: 2,
+                    lat: 39.933364,
+                    lng: 32.859742,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>ANKARA</h3><h5><i># LC Konya Region (New LC in 2016)</i></h5>- Existing Farms: 30<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 37.852168,
+                    lng: 27.878028,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>AYDIN</h3><h5><i>#  LC İzmir Region</i></h5>- Existing Farms: 83<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 39.705074,
+                    lng: 27.954025,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>BALIKESİR</h3><h5><i># LC Balıkesir Region</i></h5>- Existing Farms: 110<br>- IPARD Subsidies: 5"
+                }, {
+                    map_of: 2,
+                    lat: 37.564783,
+                    lng: 30.251273,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>BURDUR</h3><h5><i># LC Denizli Region (New LC in 2016)</i></h5>- Existing Farms: 36<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 40.188528,
+                    lng: 29.060964,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>BURSA</h3><h5><i># LC Bursa Region (New LC in 2016)</i></h5>- Existing Farms: 67<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 40.14672,
+                    lng: 26.408587,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>ÇANAKKALE</h3><h5><i># LC Balıkesir Region</i></h5>- Existing Farms: 45<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 40.519849,
+                    lng: 34.76089,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>ÇORUM</h3>- Existing Farms: 24<br>- IPARD Subsidies: 6"
+                }, {
+                    map_of: 2,
+                    lat: 37.845383,
+                    lng: 29.092536,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>DENİZLİ</h3><h5><i># LC Denizli Region (New LC in 2016)</i></h5>- Existing Farms: 42<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 38.731259,
+                    lng: 39.188901,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>ELAZIĞ</h3>- Existing Farms: 12<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 37.794893,
+                    lng: 30.666004,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>ISPARTA</h3><h5><i># LC Denizli Region (New LC in 2016)</i></h5>- Existing Farms: 24<br>- IPARD Subsidies: 2"
+                }, {
+                    map_of: 2,
+                    lat: 36.632173,
+                    lng: 33.617577,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>MERSİN</h3>- Existing Farms: 29<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 37.874643,
+                    lng: 32.493155,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>KONYA</h3><h5><i># LC Konya Region (New LC in 2016)</i></h5>- Existing Farms: 265<br>- IPARD Subsidies: 9"
+                }, {
+                    map_of: 2,
+                    lat: 39.455067,
+                    lng: 30.066524,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>KÜTAHYA</h3><h5><i># LC Bursa Region (New LC in 2016)</i></h5>- Existing Farms: 4<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 40.61616,
+                    lng: 43.145168,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>KARS</h3>- Existing Farms: 55<br>- IPARD Subsidies: 4"
+                }, {
+                    map_of: 2,
+                    lat: 37.70786,
+                    lng: 36.868079,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>KAHRAMANMARAŞ</h3>- Existing Farms: 17<br>- IPARD Subsidies: 5"
+                }, {
+                    map_of: 2,
+                    lat: 38.322844,
+                    lng: 38.444745,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>MALATYA</h3>- Existing Farms: 19<br>- IPARD Subsidies: 1"
+                }, {
+                    map_of: 2,
+                    lat: 38.674246,
+                    lng: 27.408649,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>MANİSA</h3><h5><i>#  LC İzmir Region</i></h5>- Existing Farms: 92<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 38.854227,
+                    lng: 41.436946,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>MUŞ</h3>- Existing Farms: 23<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 41.279703,
+                    lng: 36.336067,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>SAMSUN</h3>- Existing Farms: 66<br>- IPARD Subsidies: 4"
+                }, {
+                    map_of: 2,
+                    lat: 39.689615,
+                    lng: 37.086224,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>SİVAS</h3><h5><i>#  LC Kayseri Region</i></h5>- Existing Farms: 18<br>- IPARD Subsidies: 15"
+                }, {
+                    map_of: 2,
+                    lat: 40.300097,
+                    lng: 36.559041,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>TOKAT</h3>- Existing Farms: 10<br>- IPARD Subsidies: 5"
+                }, {
+                    map_of: 2,
+                    lat: 37.167404,
+                    lng: 38.795515,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>ŞANLIURFA</h3>- Existing Farms: 37<br>- IPARD Subsidies: 6"
+                }, {
+                    map_of: 2,
+                    lat: 38.72267,
+                    lng: 29.278564,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>UŞAK</h3><h5><i>#  LC İzmir Region</i></h5>- Existing Farms: 6<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 39.821049,
+                    lng: 34.808573,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>YOZGAT</h3><h5><i>#  LC Kayseri Region</i></h5>- Existing Farms: 22<br>- IPARD Subsidies: 16"
+                }, {
+                    map_of: 2,
+                    lat: 38.335204,
+                    lng: 33.975002,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>AKSARAY</h3><h5><i>#  LC Kayseri Region</i></h5>- Existing Farms: 46<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 37.157189,
+                    lng: 33.168888,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>KARAMAN</h3><h5><i># LC Konya Region (New LC in 2016)</i></h5>- Existing Farms: 18<br>- IPARD Subsidies: 0"
+                }, {
+                    map_of: 2,
+                    lat: 41.069101,
+                    lng: 42.785294,
+                    icon: 'http://i.hizliresim.com/zVjLDO.png',
+                    content: "<h3>ARDAHAN</h3>- Existing Farms: 26<br>- IPARD Subsidies: 0"
+                },
+
+
+                //Existing Farms
+                {
+                    map_of: 2,
+                    lat: 37.261232,
+                    lng: 35.390505,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ADANA</h3>- Existing Farms: 39<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.786643,
+                    lng: 38.232203,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ADIYAMAN</h3>- Existing Farms: 20<br>"
+                }, {
+                    map_of: 2,
+                    lat: 38.756885,
+                    lng: 30.538704,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>AFYONKARAHİSAR</h3><h5><i># LC Denizli Region (New LC in 2016)</i></h5>- Existing Farms: 33<br>"
+                }, {
+                    map_of: 2,
+                    lat: 36.896891,
+                    lng: 30.713323,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ANTALYA</h3>- Existing Farms: 30<br>"
+                }, {
+                    map_of: 2,
+                    lat: 41.180937,
+                    lng: 41.820819,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ARTVİN</h3>- Existing Farms: 8<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.142573,
+                    lng: 29.97933,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>BİLECİK</h3>- Existing Farms: 1<br>"
+                }, {
+                    map_of: 2,
+                    lat: 38.966733,
+                    lng: 40.454449,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>BİNGÖL</h3>- Existing Farms: 5<br>"
+                }, {
+                    map_of: 2,
+                    lat: 38.290463,
+                    lng: 42.121697,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>BİTLİS</h3>- Existing Farms: 10<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.765255,
+                    lng: 31.688009,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>BOLU</h3>- Existing Farms: 3<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.517893,
+                    lng: 33.760045,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ÇANKIRI</h3>- Existing Farms: 38<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.924973,
+                    lng: 40.210983,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>DİYARBAKIR</h3>- Existing Farms: 25<br>"
+                }, {
+                    map_of: 2,
+                    lat: 41.7,
+                    lng: 26.560986,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>EDİRNE</h3><h5><i># LOLC Trakya Region</i></h5>- Existing Farms: 37"
+                }, {
+                    map_of: 2,
+                    lat: 39.714788,
+                    lng: 39.469412,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ERZİNCAN</h3>- Existing Farms: 16<br>"
+                }, {
+                    map_of: 2,
+                    lat: 39.905499,
+                    lng: 41.265824,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ERZURUM</h3>- Existing Farms: 43<br>"
+                }, {
+                    map_of: 2,
+                    lat: 39.766706,
+                    lng: 30.525631,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ESKİŞEHİR</h3><h5><i># LC Bursa Region (New LC in 2016)</i></h5>- Existing Farms: 16<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.067538,
+                    lng: 37.371398,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>GAZİANTEP</h3>- Existing Farms: 60<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.462328,
+                    lng: 26.631751,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>GELİBOLU</h3><h5><i># LOLC Trakya Region</i></h5><br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.841405,
+                    lng: 38.396037,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>GİRESUN</h3>- Existing Farms: 4<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.38429,
+                    lng: 39.635654,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>GÜMÜŞHANE</h3>- Existing Farms: 9<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.521741,
+                    lng: 43.742806,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>HAKKARİ</h3>- Existing Farms: 2<br>"
+                }, {
+                    map_of: 2,
+                    lat: 36.401849,
+                    lng: 36.34981,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>HATAY</h3>- Existing Farms: 30<br>"
+                }, {
+                    map_of: 2,
+                    lat: 41.008238,
+                    lng: 28.978359,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>İSTANBUL</h3><h5><i># LOLC Trakya Region</i></h5>- Existing Farms: 33<br>"
+                }, {
+                    map_of: 2,
+                    lat: 38.493369,
+                    lng: 27.279739,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>İZMİR</h3><h5><i>#  LC İzmir Region</i></h5>- Existing Farms: 411<br>"
+                }, {
+                    map_of: 2,
+                    lat: 41.264971,
+                    lng: 33.906816,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>KASTAMONU</h3>- Existing Farms: 8<br>"
+                }, {
+                    map_of: 2,
+                    lat: 38.720489,
+                    lng: 35.482597,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>KAYSERİ</h3><h5><i>#  LC Kayseri Region</i></h5>- Existing Farms: 53<br>"
+                }, {
+                    map_of: 2,
+                    lat: 41.739887,
+                    lng: 27.139981,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>KIRKLARELİ</h3><h5><i># LOLC Trakya Region</i></h5>- Existing Farms: 48<br>"
+                }, {
+                    map_of: 2,
+                    lat: 39.123576,
+                    lng: 34.064142,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>KIRŞEHİR</h3><h5><i>#  LC Kayseri Region</i></h5>- Existing Farms: 7<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.85327,
+                    lng: 29.88152,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>KOCAELİ</h3><h5><i># LC Bursa Region (New LC in 2016)</i></h5>- Existing Farms: 16<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.423615,
+                    lng: 40.68998,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>MARDİN</h3>- Existing Farms: 8<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.235198,
+                    lng: 28.439676,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>MUĞLA</h3><h5><i>#  LC İzmir Region</i></h5>- Existing Farms: 22<br>"
+                }, {
+                    map_of: 2,
+                    lat: 38.597751,
+                    lng: 34.641403,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>NEVŞEHİR</h3><h5><i>#  LC Kayseri Region</i></h5>- Existing Farms: 12<br>"
+                }, {
+                    map_of: 2,
+                    lat: 38.144134,
+                    lng: 34.774079,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>NİĞDE</h3><h5><i>#  LC Kayseri Region</i></h5>- Existing Farms: 24<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.905117,
+                    lng: 37.878865,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ORDU</h3>- Existing Farms: 3<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.859665,
+                    lng: 40.635431,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>RİZE</h3>- Existing Farms: 0<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.773074,
+                    lng: 30.394817,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>SAKARYA</h3>- Existing Farms: 12<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.93449,
+                    lng: 41.907176,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>SİİRT</h3>- Existing Farms: 4<br>"
+                }, {
+                    map_of: 2,
+                    lat: 41.950779,
+                    lng: 35.0263,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>SİNOP</h3>- Existing Farms: 1<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.978092,
+                    lng: 27.511674,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>TEKİRDAĞ</h3><h5><i># LOLC Trakya Region</i></h5>- Existing Farms: 46<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.956216,
+                    lng: 39.73504,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>TRABZON</h3>- Existing Farms: 0<br>"
+                }, {
+                    map_of: 2,
+                    lat: 39.153046,
+                    lng: 39.539651,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>TUNCELİ</h3>- Existing Farms: 1<br>"
+                }, {
+                    map_of: 2,
+                    lat: 38.597252,
+                    lng: 43.389488,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>VAN</h3>- Existing Farms: 9<br>"
+                }, {
+                    map_of: 2,
+                    lat: 41.354142,
+                    lng: 31.847374,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ZONGULDAK</h3>- Existing Farms: 2<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.258699,
+                    lng: 40.318851,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>BAYBURT</h3>- Existing Farms: 12<br>"
+                }, {
+                    map_of: 2,
+                    lat: 39.860698,
+                    lng: 33.557162,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>KIRIKKALE</h3>- Existing Farms: 7<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.825965,
+                    lng: 41.124307,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>BATMAN</h3>- Existing Farms: 7<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.568018,
+                    lng: 42.404636,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>ŞIRNAK</h3>- Existing Farms: 1<br>"
+                }, {
+                    map_of: 2,
+                    lat: 41.568597,
+                    lng: 32.379301,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>BARTIN</h3>- Existing Farms: 3<br>"
+                }, {
+                    map_of: 2,
+                    lat: 39.887984,
+                    lng: 44.004837,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>IĞDIR</h3>- Existing Farms: 8<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.60203,
+                    lng: 29.255323,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>YALOVA</h3><h5><i># LC Bursa Region (New LC in 2016)</i></h5>- Existing Farms: 1<br>"
+                }, {
+                    map_of: 2,
+                    lat: 41.19562,
+                    lng: 32.622654,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>KARABÜK</h3>- Existing Farms: 1<br>"
+                }, {
+                    map_of: 2,
+                    lat: 36.750717,
+                    lng: 37.104412,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>KİLİS</h3>- Existing Farms: 8<br>"
+                }, {
+                    map_of: 2,
+                    lat: 37.05503,
+                    lng: 36.30646,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>OSMANİYE</h3>- Existing Farms: 19<br>"
+                }, {
+                    map_of: 2,
+                    lat: 40.863756,
+                    lng: 31.239747,
+                    icon: 'http://i.hizliresim.com/J4ZnYJ.png',
+                    content: "<h3>DÜZCE</h3>- Existing Farms: 8<br>"
+                },
+
+                //Customers
+                {
+                    map_of: 2,
+                    lat: 41.108956,
+                    lng: 28.369396,
+                    icon: 'http://i.hizliresim.com/zVj1dO.png',
+                    content: "<h3>Customer Name: <u>Eriş Yem</u></h3><hr>- <b>Robots:</b>Lely Astronaut A4 Robot<ul>- <b>Other Lely Equipments -</b><li>Juno 100</li><li>ID Reader</li></ul>- <b>Number of Milking Cows:</b> 50<hr><img src='http://i.hizliresim.com/zVpjpD.jpg'/> "
+                }, {
+                    map_of: 2,
+                    lat: 40.893756,
+                    lng: 26.903886,
+                    icon: 'http://i.hizliresim.com/zVj1dO.png',
+                    content: "<h3>Customer Name: <u>Sürücü Hayvancılık</u></h3><hr>- <b>Robots:</b>Lely Astronaut A4 Robot<ul>- <b>Other Lely Equipments -</b><li>4 Ton Nautilus</li><li>Juno 100</li><li>Calm Conpact</li></ul>- <b>Number of Milking Cows:</b> 58 Sağmal<hr><img src='http://i.hizliresim.com/3al69M.jpg'/>"
+                }, {
+                    map_of: 2,
+                    lat: 41.5497,
+                    lng: 27.502899,
+                    icon: 'http://i.hizliresim.com/zVj1dO.png',
+                    content: "<h3>Customer Name: <u>Onar Tarım</u></h3><hr>- <b>Robots:</b> 4x Lely Astronaut A4 Robot<ul>- <b>Other Lely Equipments:</b><li>16 Ton Nautilus</li><li>Juno 150</li><li>Calm Vario+</li><li>Treatment Box</li><li>Buffer Tank</li><li>4x Luna</li><li>2x Discovery</li><li>L4C</li></ul>- <b>Number of Milking Cows:</b> 240 Sağmal<hr><img src='http://i.hizliresim.com/ylp6pa.jpg'/>"
+                }, {
+                    map_of: 2,
+                    lat: 39.473305,
+                    lng: 27.682114,
+                    icon: 'http://i.hizliresim.com/zVj1dO.png',
+                    content: "<h3>Customer Name: <u>Onet Et</u></h3><hr>- <b>Robots:</b> 4x Lely Astronaut A4 Robot<ul>- <b>Other Lely Equipments:</b><li>8 Ton Nautilus</li><li>Buffer Tank</li><li>Pre-Cooler</li><li>Juno 100</li><li>Calm Conpact</li><li>L4C</li><li>Treatment Box</li><li>7x Luna</li></ul>- <b>Number of Milking Cows:</b> 185 Sağmal<hr><img src='http://i.hizliresim.com/RVprpj.jpg'/>"					
+                }, {
+                    map_of: 2,
+                    lat: 37.904083,
+                    lng: 33.836145,
+                    icon: 'http://i.hizliresim.com/zVj1dO.png',
+                    content: "<h3>Customer Name: <u>Mavi-Yeşil Enerji</u></h3><hr>- <b>Robots:</b> 2x Lely Astronaut A4 Robot<ul>- <b>Other Lely Equipments:</b><li>Nautilus</li><li>Juno</li><li>Calm</li></ul>- <b>Number of Milking Cows:</b> Not Yet<hr><img src='http://i.hizliresim.com/Gk4m47.jpg'/>"
+                },
+
+                //LC
+                {
+                    map_of: 2,
+                    lat: 39.632134,
+                    lng: 27.710953,
+                    icon: 'http://i.hizliresim.com/vLp6Mr.png',
+                    content: "<h3>LC Balıkesir</h3><hr>Milkturk Gıda Hayvancılık ve Yem San.Ürünleri A.Ş.<br>Niyazi Şimşek<br>O.S.B. 8.Cad. No:6 Balıkesir<br>P.K. 10100<br>Kurtdereli V.D. 6200528437<hr><img src='http://i.hizliresim.com/gAYr80.jpg'/>"
+                }, {
+                    map_of: 2,
+                    lat: 38.395505,
+                    lng: 27.095087,
+                    icon: 'http://i.hizliresim.com/vLp6Mr.png',
+                    content: "<h3>LC İzmir</h3><hr>Usda Danışmanlık Proje Tarım San. ve Tic. Ltd. Şti.<br>Onur Bekler - Özgür Topuzoğlu<br>Esenyalı Mah. 108/2 Sok. No:2 D:17 Karabağlar / İzmir<br>P.K. 35140<br>Kadifekale V.D. 8940379486<hr><img src='http://i.hizliresim.com/EqAmJB.jpg'/>"
+                }, {
+                    map_of: 2,
+                    lat: 38.733698,
+                    lng: 35.54184,
+                    icon: 'http://i.hizliresim.com/vLp6Mr.png',
+                    content: "<h3>LC Kayseri</h3><hr>AND Makina<br>Fırat Tuncay<br>O.S.B. 11. CAD. NO:24 Melikgazi / Kayseri<br>P.K. 38030<br>M. Sinan V.D. 8630051737<hr><img src='http://i.hizliresim.com/aDNlld.jpg'/>"
+                }, {
+                    map_of: 2,
+                    lat: 41.403217,
+                    lng: 27.347344,
+                    icon: 'http://i.hizliresim.com/vLp6Mr.png',
+                    content: "<h3>LOLC Trakya</h3><hr>Lely Trakya Çiftlik Ekipmanları San. İç ve Dış Tic. LTD. ŞTİ.<br>Hakan Copur<br>Hürriyet Mah. Eski İstasyon Cad. No: 31 Z.01 Lüleburgaz / Kırklareli<br>P.K. 39760<br>Lüleburgaz V.D. 6080597189<hr><img src='http://i.hizliresim.com/VLz90y.jpg'/>"
+                },
+
+
+
+            ];
+
+            //addAllLocations(locations, maps=[map, map2]);
+            addAllLocations(locations, maps = [map, map2]);
+            var ipard_icon_url = "http://i.hizliresim.com/zVjLDO.png";
+            var existing_farms_icon_url = "http://i.hizliresim.com/J4ZnYJ.png";
+            var customers_icon_url = "http://i.hizliresim.com/zVj1dO.png";
+            var lely_centers_icon_url = "http://i.hizliresim.com/vLp6Mr.png";
+            $("#chck_existing_farms, #chck_ipard_symbol, #chck_customers, #chck_lely_lc").change(function() {
+                var existing_farms_bool = $("#chck_existing_farms").is(":checked")
+                var ipard_symbol_bool = $("#chck_ipard_symbol").is(":checked")
+                var customers_bool = $("#chck_customers").is(":checked")
+                var lely_lc_bool = $("#chck_lely_lc").is(":checked")
+
+                for (var i = 0; i < markers.length; i++) {
+                    if (markers[i].icon == ipard_icon_url) {
+                        if (ipard_symbol_bool) {
+                            markers[i].setMap(map2);
+                        } else {
+                            markers[i].setMap(null);
+                        }
+                    } else if (markers[i].icon == existing_farms_icon_url) {
+                        if (existing_farms_bool) {
+                            markers[i].setMap(map2);
+                        } else {
+                            markers[i].setMap(null);
+                        }
+                    } else if (markers[i].icon == customers_icon_url) {
+                        if (customers_bool) {
+                            markers[i].setMap(map2);
+                        } else {
+                            markers[i].setMap(null);
+                        }
+                    } else if (markers[i].icon == lely_centers_icon_url) {
+                        if (lely_lc_bool) {
+                            markers[i].setMap(map2);
+                        } else {
+                            markers[i].setMap(null);
+                        }
+                    }
+                }
+
+            });
+
+            $.getJSON(coordsurl, function(data) {
+
+                var polygonCoords = [];
+
+                for (var i = 0; i < data.coordinates.length; i = i + 2) {
+                    polygonCoords.push({
+                        lat: data.coordinates[i + 1],
+                        lng: data.coordinates[i]
+                    });
+                }
+
+                var polygon = new google.maps.Polygon({
+                    paths: polygonCoords,
+                    strokeColor: '#808080',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35
+                });
+                polygon.setMap(map2);
+            });
+
+            $.getJSON(coordsur2, function(data) {
+
+                var polygonCoords = [];
+
+                for (var i = 0; i < data.coordinates.length; i = i + 2) {
+                    polygonCoords.push({
+                        lat: data.coordinates[i + 1],
+                        lng: data.coordinates[i]
+                    });
+                }
+
+                var polygon = new google.maps.Polygon({
+                    paths: polygonCoords,
+                    strokeColor: '#808080',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#32CD32',
+                    fillOpacity: 0.35
+                });
+                polygon.setMap(map2);
+                alert("Welcome to Lely Orient Info Map");
+
+            });
+
+            $.getJSON(coordsur3, function(data) {
+
+                var polygonCoords = [];
+
+                for (var i = 0; i < data.coordinates.length; i = i + 2) {
+                    polygonCoords.push({
+                        lat: data.coordinates[i + 1],
+                        lng: data.coordinates[i]
+                    });
+                }
+
+                var polygon = new google.maps.Polygon({
+                    paths: polygonCoords,
+                    strokeColor: '#808080',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#32CD32',
+                    fillOpacity: 0.35
+                });
+                polygon.setMap(map2);
+            });
+
+            $.getJSON(coordsur4, function(data) {
+
+                var polygonCoords = [];
+
+                for (var i = 0; i < data.coordinates.length; i = i + 2) {
+                    polygonCoords.push({
+                        lat: data.coordinates[i + 1],
+                        lng: data.coordinates[i]
+                    });
+                }
+
+                var polygon = new google.maps.Polygon({
+                    paths: polygonCoords,
+                    strokeColor: '#808080',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#4682B4',
+                    fillOpacity: 0.35
+                });
+                polygon.setMap(map2);
+            });
+
+            $.getJSON(coordsur5, function(data) {
+
+                var polygonCoords = [];
+
+                for (var i = 0; i < data.coordinates.length; i = i + 2) {
+                    polygonCoords.push({
+                        lat: data.coordinates[i + 1],
+                        lng: data.coordinates[i]
+                    });
+                }
+
+                var polygon = new google.maps.Polygon({
+                    paths: polygonCoords,
+                    strokeColor: '#808080',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#4682B4',
+                    fillOpacity: 0.35
+                });
+                polygon.setMap(map2);
+            });
+
+            $.getJSON(coordsur6, function(data) {
+
+                var polygonCoords = [];
+
+                for (var i = 0; i < data.coordinates.length; i = i + 2) {
+                    polygonCoords.push({
+                        lat: data.coordinates[i + 1],
+                        lng: data.coordinates[i]
+                    });
+                }
+
+                var polygon = new google.maps.Polygon({
+                    paths: polygonCoords,
+                    strokeColor: '#808080',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF8C00',
+                    fillOpacity: 0.35
+                });
+                polygon.setMap(map2);
+            });
+
+            $.getJSON(coordsur7, function(data) {
+
+                var polygonCoords = [];
+
+                for (var i = 0; i < data.coordinates.length; i = i + 2) {
+                    polygonCoords.push({
+                        lat: data.coordinates[i + 1],
+                        lng: data.coordinates[i]
+                    });
+                }
+
+                var polygon = new google.maps.Polygon({
+                    paths: polygonCoords,
+                    strokeColor: '#808080',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF8C00',
+                    fillOpacity: 0.35
+                });
+                polygon.setMap(map2);
+            });
+
+        }
+
+        function addAllLocations(list, maps) {
+            var marker, the_map;
+            var infowindow = new google.maps.InfoWindow();
+
+            for (var i = 0; i < list.length; i++) {
+                the_map = maps[list[i].map_of - 1];
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(list[i].lat, list[i].lng),
+                    map: the_map,
+                    icon: list[i].icon
+                });
+
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                    return function() {
+                        infowindow.setContent(list[i].content);
+                        infowindow.open(marker.map, marker);
+                        marker.map.setZoom(8);
+                        marker.map.setCenter(marker.getPosition());
+                    }
+                })(marker, i));
+
+                markers.push(marker);
+            }
+        }
+    </script>
+
+    <script>
+        function show2() {
+            var Digital = new Date()
+            var hours = Digital.getHours()
+            var minutes = Digital.getMinutes()
+            var seconds = Digital.getSeconds()
+            var dn = "AM"
+            if (hours > 12) {
+                dn = "PM"
+                hours = hours - 12
+            }
+            if (hours == 0)
+                hours = 12
+            if (minutes <= 9)
+                minutes = "0" + minutes
+            if (seconds <= 9)
+                seconds = "0" + seconds
+            var ctime = "<b><font face='Verdana' color='red'>" + hours + ":" + minutes + ":" + seconds + " " + dn + "</font></b>"
+            if (!document.all)
+                document.write(ctime)
+            else
+                tick2.innerHTML = ctime
+        }
+
+        function loadclock() {
+            if (document.all)
+                setInterval("show2()", 1000)
+        }
+        if (!document.all)
+            show2()
+    </script>
+
+    <script language="JavaScript" type="text/javascript">
+        function lib_bwcheck() {
+            this.ver = navigator.appVersion
+            this.agent = navigator.userAgent
+            this.dom = document.getElementById ? 1 : 0
+            this.opera5 = this.agent.indexOf("Opera 5") > -1
+            this.ie5 = (this.ver.indexOf("MSIE 5") > -1 && this.dom && !this.opera5) ? 1 : 0;
+            this.ie6 = (this.ver.indexOf("MSIE 6") > -1 && this.dom && !this.opera5) ? 1 : 0;
+            this.ie4 = (document.all && !this.dom && !this.opera5) ? 1 : 0;
+            this.ie = this.ie4 || this.ie5 || this.ie6
+            this.mac = this.agent.indexOf("Mac") > -1
+            this.ns6 = (this.dom && parseInt(this.ver) >= 5) ? 1 : 0;
+            this.ns4 = (document.layers && !this.dom) ? 1 : 0;
+            this.bw = (this.ie6 || this.ie5 || this.ie4 || this.ns4 || this.ns6 || this.opera5)
+            return this
+        }
+        var bw = new lib_bwcheck()
+
+
+        nWorks = 0
+
+
+        nSlidespeed = 5
+        nNewsheight = 80
+
+        nBetweendelay = 1000
+        nFont = 'arial,helvetiva'
+        nFontsize = 22
+        nFadespeed = 100
+
+
+        nColor = new Array('#FFFFFF', '#EEEEEE', '#CCCCCC', '#999999', '#666666', '#333333', '#000000')
+
+
+        nNews = new Array()
+
+        nNews[0] = new Array()
+        nNews[0]["text"] = "Welcome to Lely Turkey Info Map"
+        nNews[0]["link"] = "http://www.lely.com/tr/ana-sayfa"
+
+        nNews[1] = new Array()
+        nNews[1]["text"] = "Some specific information attached bottom of the page"
+        nNews[1]["link"] = "http://www.lely.com/tr/ana-sayfa"
+
+        nNews[2] = new Array()
+        nNews[2]["text"] = "Please click here for Lely Orient Official Page"
+        nNews[2]["link"] = "http://www.lely.com/tr/ana-sayfa"
+
+        function makeNewsObj(obj, nest, font, size, color, news, fadespeed, betweendelay, slidespeed, works, newsheight) {
+            nest = (!nest) ? "" : 'document.' + nest + '.'
+            this.css = bw.dom ? document.getElementById(obj).style : bw.ie4 ? document.all[obj].style : bw.ns4 ? eval(nest + "document.layers." + obj) : 0;
+            this.writeref = bw.dom ? document.getElementById(obj) : bw.ie4 ? document.all[obj] : bw.ns4 ? eval(nest + "document.layers." + obj + ".document") : 0;
+            if (font) {
+                this.color = new Array();
+                this.color = eval(color);
+                this.news = new Array();
+                this.news = eval(news)
+                this.font = font;
+                this.size = size;
+                this.speed = fadespeed;
+                this.delay = betweendelay;
+                this.newsheight = newsheight;
+                this.fadeIn = b_fadeIn;
+                this.fadeOut = b_fadeOut;
+                this.newsWrite = b_newsWrite;
+                this.y = 1
+                this.slideIn = b_slideIn;
+                this.moveIt = b_moveIt;
+                this.slideSpeed = slidespeed;
+                this.works = works
+                if (bw.dom || bw.ie4) {
+                    this.css.fontFamily = this.font;
+                    this.css.fontSize = this.size;
+                    this.css.color = this.color[0]
+                }
+            }
+            this.obj = obj + "Object";
+            eval(this.obj + "=this");
+            return this
+        }
+
+
+        var px = bw.ns4 || window.opera ? "" : "px";
+
+        function b_moveIt(x, y) {
+            this.x = x;
+            this.y = y;
+            this.css.left = this.x + px;
+            this.css.top = this.y + px;
+        }
+
+        function b_newsWrite(num, i) {
+            if (bw.ns4) {
+                this.writeref.write("<a href=\"" + this.news[num]['link'] + "\" target=\"myTarget\" style=\"text-decoration:none; font-size:" + this.size + "px\">" + "<font face=\"" + this.font + "\" color=\"" + this.color[i] + "\">" + this.news[num]
+                    ['text'] + "</font></a>")
+                this.writeref.close()
+            } else this.writeref.innerHTML = '<a id="' + this.obj + 'link' + '" target="myTarget"  style="text-decoration:none; font-size:' + this.size + 'px; color:' + this.color[i] + '" href="' + this.news[num]['link'] + '">' + this.news[num][
+                'text'
+            ] + '</a>'
+        }
+
+        function b_slideIn(num, i) {
+            if (this.y > 0) {
+                if (i == 0) {
+                    this.moveIt(0, this.newsheight);
+                    this.newsWrite(num, this.color.length - 1)
+                }
+                this.moveIt(this.x, this.y - this.slideSpeed)
+                i++
+                setTimeout(this.obj + ".slideIn(" + num + "," + i + ");", 50)
+            } else setTimeout(this.obj + ".fadeOut(" + num + "," + (this.color.length - 1) + ")", this.delay)
+        }
+
+        function b_fadeIn(num, i) {
+            if (i < this.color.length) {
+                if (i == 0 || bw.ns4) this.newsWrite(num, i)
+                else {
+                    obj = bw.ie4 ? eval(this.obj + "link") : document.getElementById(this.obj + "link")
+                    obj.style.color = this.color[i]
+                }
+                i++
+                setTimeout(this.obj + ".fadeIn(" + num + "," + i + ")", this.speed)
+            } else setTimeout(this.obj + ".fadeOut(" + num + "," + (this.color.length - 1) + ")", this.delay)
+        }
+
+        function b_fadeOut(num, i) {
+            if (i >= 0) {
+                if (i == 0 || bw.ns4) this.newsWrite(num, i)
+                else {
+                    obj = bw.ie4 ? eval(this.obj + "link") : document.getElementById(this.obj + "link")
+                    obj.style.color = this.color[i]
+                }
+                i--
+                setTimeout(this.obj + ".fadeOut(" + num + "," + i + ")", this.speed)
+            } else {
+                num++
+                if (num == this.news.length) num = 0
+                works = !this.works ? 0 : this.works == 1 ? 1 : Math.round(Math.random())
+                if (works == 0) setTimeout(this.obj + ".fadeIn(" + num + ",0)", 500)
+                else if (works == 1) {
+                    this.y = 1;
+                    setTimeout(this.obj + ".slideIn(" + num + ",0)", 500)
+                }
+            }
+        }
+
+        function fadeInit() {
+            oNews = new makeNewsObj('divNews', 'divNewsCont', nFont, nFontsize, "nColor", "nNews", nFadespeed, nBetweendelay, nSlidespeed, nWorks, nNewsheight)
+            oNewsCont = new makeNewsObj('divNewsCont')
+            works = !oNews.works ? 0 : oNews.works == 1 ? 1 : Math.round(Math.random())
+            if (works == 0) oNews.fadeIn(0, 0)
+            else if (works == 1) oNews.slideIn(0, 0)
+            oNewsCont.css.visibility = "visible"
+        }
+
+        if (bw.bw) onload = fadeInit
+    </script>
+
+</head>
+
+<body style="background-size: cover;" background="http://i.hizliresim.com/5ka04l.jpg" onload="initialize()">
+    <p align="center">
+        <span id=tick2></span>
+    </p>
+    <marquee id="divNewsCont"></marquee>
+    <marquee id="divNews"></marquee>
+    </div>
+    </div>
+    <hr>
+
+    <table align="center">
+        <tr>
+            <td>
+                <a target="_blank" href="http://www.lely.com/tr/ana-sayfa" style="border:none;margin:0px;padding:0px;background-color:transparent;">
+                    <img src="http://i.hizliresim.com/1kgnaj.png" height="149" width="200" />
+            </td>
+        </tr>
+    </table>
+    <table align="center">
+        <tr>
+            <td>
+                <a target="_blank" href="https://www.facebook.com/pages/Lely-T%C3%BCrkiye/747918055231958" style="border:none;margin:0px;padding:0px;background-color:transparent;">
+                    <img style="margin:0px;padding:0px;background-color:transparent;border:none;" src="http://i.hizliresim.com/1k6aZG.png" />
+                </a>
+                <a target="_blank" href="https://twitter.com/lelyturkey" style="border:none;margin:0px;padding:0px;background-color:transparent;">
+                    <img style="margin:0px;padding:0px;background-color:transparent;border:none;" src="http://i.hizliresim.com/rV5XN1.png" />
+                </a>
+                <a target="_blank" href="https://plus.google.com/+LelyTurkiye" style="border:none;margin:0px;padding:0px;background-color:transparent;">
+                    <img style="margin:0px;padding:0px;background-color:transparent;border:none;" src="http://i.hizliresim.com/L4l8Rb.png" />
+                </a>
+                <a target="_blank" href="https://www.youtube.com/user/LelyTurkiye" style="border:none;margin:0px;padding:0px;background-color:transparent;">
+                    <img style="margin:0px;padding:0px;background-color:transparent;border:none;" src="http://i.hizliresim.com/QlL88G.png" />
+                </a>
+            </td>
+        </tr>
+    </table>
+    <table align="center">
+        <tr>
+            <td>
+                <hr />
+                <h2 align="center">Lely Center Locations</h2>
+                <hr />
+                <div id="map_canvas" style="width:1330px; height:460px"></div>
+            </td>
+        </tr>
+        <tr>
+            <td background="http://i.hizliresim.com/5ka04l.jpg">
+                <hr />
+
+                <h2 style="font-size:32px" align="center">Lely Turkey Info Map</h2>
+                <hr />
+                <p><b><input type="checkbox" id="chck_existing_farms" checked /><img src="http://i.hizliresim.com/J4ZnYJ.png" alt="Existing Farms" />   Existing Farms</b></p>
+                <p><b><input type="checkbox" id="chck_ipard_symbol" checked /><img src="http://i.hizliresim.com/zVjLDO.png" alt="IPARD SYMBOL" /> IPARD</b></p>
+                <p><b><input type="checkbox" id="chck_customers" checked /><img src="http://i.hizliresim.com/zVj1dO.png" alt="CUSTOMERS" /> Lely Customers</b></p>
+                <p><b><input type="checkbox" id="chck_lely_lc" checked /><img src="http://i.hizliresim.com/vLp6Mr.png" alt="Lely LC" /> Lely Centers</b></p>
+                <p><b>Total Existing Farms(According to data collected in 2015): <b style="color:red">2425</b></b>
+                </p>
+                <hr />
+
+                <div id="map_canvas2" style="width:1330px; height:460px"></div>
+            </td>
+
+    </table>
+</body>
+
+</html>
